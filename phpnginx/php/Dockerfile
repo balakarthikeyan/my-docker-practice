@@ -14,5 +14,5 @@ WORKDIR /var/www/html
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN git config --global user.email "balakarthikeyan.anandakumar.eqs.com" \ 
+RUN git config --global user.email "balakarthikeyan07@gmail.com" \ 
     && git config --global user.name "Balakarthikeyan"
