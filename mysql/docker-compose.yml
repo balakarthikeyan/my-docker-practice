@@ -12,10 +12,15 @@ services:
       MYSQL_USER: db_user
       MYSQL_PASSWORD: db_user_pass
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    # expose port 3306 so we can connect to the server with desktop applications like MySQL Workbench
     ports:
       - '3306:3306'
     volumes:
+      # create a local volume for the database storage so you won't loose the data if you delete the docker container
       - ./mysqldata:/var/lib/mysql
+      # - ./.docker/mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.conf
+      # load the sql files from here on database creation
+      # - ./.docker/mysql/dumpl.sql:/docker-entrypoint-initdb.d/dump.sql
     restart: always
     networks:
       mysql-phpmyadmin:
@@ -36,22 +41,32 @@ services:
     environment:
       PMA_HOST: database
       PMA_PORT: 3306
+      # PMA_USER: db_user
+      # PMA_PASSWORD: db_user_pass
     restart: always
     networks:
       mysql-phpmyadmin:
         aliases:
           - phpmyadmin
 
+  # wp-mariadb:
+  #   image: mariadb:latest
+  #   container_name: wp-mariadb
+  #   volumes:
+  #     - ./mysqldata:/var/lib/mysql
+  #     - ./.docker/mysql/dumpl.sql:/docker-entrypoint-initdb.d/dump.sql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=db_root_pass
+  #     - MYSQL_USER=db_user
+  #     - MYSQL_PASSWORD=db_user_pass
+  #     - MYSQL_DATABASE=
+  #   restart: always
+
 networks:
     mysql-phpmyadmin:
         name: mysql-phpmyadmin
         driver: bridge
-        external: true
-        # attachable: true
 
 volumes:
   mysqldata:
     driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
