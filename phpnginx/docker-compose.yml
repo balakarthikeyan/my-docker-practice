@@ -18,7 +18,7 @@ services:
     image: nginx:latest
     restart: always
     ports:
-      - '80:80'
+      - '8080:80'
       - '443:443'
     volumes:
       - ./projects:/var/www/html
