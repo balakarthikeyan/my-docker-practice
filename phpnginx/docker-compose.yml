@@ -5,20 +5,27 @@ services:
     container_name: php
     build:
       context: ./php
+    image: php:latest
     volumes:
       - ./logs:/var/log
       - ./projects:/var/www/html
     env_file:
       - ./.env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bash", "-c", "</dev/tcp/localhost/9000"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
     networks:
       mysql-phpmyadmin: {}
 
   nginx:
     container_name: nginx
     image: nginx:latest
-    restart: always
+    restart: unless-stopped
     ports:
-      - '8080:80'
+      - '80:80'
       - '443:443'
     volumes:
       - ./projects:/var/www/html

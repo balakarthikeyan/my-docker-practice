@@ -1,4 +1,4 @@
-FROM php:8.2.24-fpm
+FROM php:8.3.20-fpm
 
 # Install PHP system extensions.
 RUN apt update && apt install -y zlib1g-dev g++ libssl-dev libicu-dev libzip-dev zip unzip git \
